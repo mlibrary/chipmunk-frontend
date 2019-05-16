@@ -13,13 +13,15 @@ class CHERObjectList extends React.Component {
   }
 
   componentDidMount() {
-    fetch("foo.json")
+    fetch("v1/bags/foo")
       .then(res => res.json())
       .then(
         (result) => {
           this.setState({
             isLoaded: true,
-            files: result.files
+            files: result.files,
+            external_id: "foo",
+            base: "v1/packages/" + result.bag_id + "/"
           });
         },
         // Note: it's important to handle errors here
@@ -35,20 +37,24 @@ class CHERObjectList extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, files } = this.state;
+    const { error, isLoaded, files, external_id, base } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
       return <div>Loading...</div>;
     } else {
       return (
-        <List type="bulleted">
-          {files.map(file => (
-            <li>
-              {file}
-            </li>
-          ))}
-        </List>
+        <div>
+          <Heading size="large" level={1}>{external_id}</Heading>
+
+          <List type="bulleted">
+            {files.map(file => (
+              <li>
+                <a href={base + file}>{file}</a>
+              </li>
+            ))}
+          </List>
+        </div>
       );
     }
   }
@@ -60,8 +66,6 @@ function App() {
       <GlobalStyleSheet />
 
       <Header name="CHER" />
-
-      <Heading size="large" level={1}>Some Package With Some Files</Heading>
 
       <CHERObjectList />
     </main>
