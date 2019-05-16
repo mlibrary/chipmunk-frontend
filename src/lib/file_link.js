@@ -3,7 +3,11 @@ import { Link } from "@umich-lib/core";
 
 class FileLink extends React.Component {
   render() {
-    <Link href={this.props.base + "/" + "ok"} />
+    console.log('props', this.props)
+
+    return (
+      <Link to={this.props.base + "/" + "ok"}></Link>
+    )
   }
 }
 

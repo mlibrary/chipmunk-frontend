@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Header, List, Heading, GlobalStyleSheet } from "@umich-lib/core";
+import { Margins, List, Link, Heading, GlobalStyleSheet, SPACING } from "@umich-lib/core";
 
 class CHERObjectList extends React.Component {
     constructor(props) {
@@ -44,12 +44,12 @@ class CHERObjectList extends React.Component {
     } else {
       return (
         <div>
-          <Heading size="large" level={1}>{this.props.package}</Heading>
+          <Heading size="XL" level={1} style={{ marginBottom: SPACING['XL'] }}>{this.props.package}</Heading>
 
           <List type="bulleted">
-            {files.map(file => (
-              <li>
-                <a href={base + file}>{file}</a>
+            {files.map((file, i) => (
+              <li key={file + i} style={{ marginBottom: '1rem' }}>
+                <Link href={base + file}>{file}</Link>
               </li>
             ))}
           </List>
@@ -62,11 +62,10 @@ class CHERObjectList extends React.Component {
 function App() {
   return (
     <main style={{ padding: "1rem" }}>
-      <GlobalStyleSheet />
-
-      <Header name="CHER" />
-
-      <CHERObjectList package="39015091568421" />
+      <Margins>
+        <GlobalStyleSheet />
+        <CHERObjectList package="39015091568421" />
+      </Margins>
     </main>
   );
 }
