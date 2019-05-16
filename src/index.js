@@ -13,14 +13,13 @@ class CHERObjectList extends React.Component {
   }
 
   componentDidMount() {
-    fetch("v1/bags/foo")
+    fetch("v1/bags/" + this.props.package)
       .then(res => res.json())
       .then(
         (result) => {
           this.setState({
             isLoaded: true,
             files: result.files,
-            external_id: "foo",
             base: "v1/packages/" + result.bag_id + "/"
           });
         },
@@ -37,7 +36,7 @@ class CHERObjectList extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, files, external_id, base } = this.state;
+    const { error, isLoaded, files, base } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -45,7 +44,7 @@ class CHERObjectList extends React.Component {
     } else {
       return (
         <div>
-          <Heading size="large" level={1}>{external_id}</Heading>
+          <Heading size="large" level={1}>{this.props.package}</Heading>
 
           <List type="bulleted">
             {files.map(file => (
@@ -67,7 +66,7 @@ function App() {
 
       <Header name="CHER" />
 
-      <CHERObjectList />
+      <CHERObjectList package="39015091568421" />
     </main>
   );
 }
