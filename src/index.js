@@ -5,12 +5,12 @@ import PackageBrowser from "./package_browser";
 
 function App() {
   return (
-    <main>
+    <div>
       <GlobalStyleSheet/>
       <UniversalHeader/>
 
       <Margins>
-        <div style={{
+        <main style={{
           maxWidth: '38rem'
         }}>
           <Heading level={1} size="3XL" style={{
@@ -18,9 +18,9 @@ function App() {
             marginBottom: SPACING['XL']
           }}>CHER Package Browser</Heading>
           <PackageBrowser />
-        </div>
+        </main>
       </Margins>
-    </main>
+    </div>
   );
 }
 
