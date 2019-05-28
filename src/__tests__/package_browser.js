@@ -1,5 +1,5 @@
 import React from "react";
-import BagBrowser from "../bag_browser";
+import PackageBrowser from "../package_browser";
 import {render, fireEvent, cleanup} from "react-testing-library";
 
 let doc;
@@ -12,10 +12,10 @@ afterEach(() => {
   fetch.resetMocks();
 });
 
-describe('<BagBrowser/>', () => {
+describe('<PackageBrowser/>', () => {
   beforeEach(() => {
     doc = render(
-      <BagBrowser/>
+      <PackageBrowser/>
     );
   });
 
@@ -120,10 +120,10 @@ describe('<BagBrowser/>', () => {
   });
 });
 
-describe('<BagBrowser api="https://default.invalid"/>', () => {
+describe('<PackageBrowser api="https://default.invalid"/>', () => {
   beforeEach(() => {
     doc = render(
-      <BagBrowser api="https://default.invalid"/>
+      <PackageBrowser api="https://default.invalid"/>
     );
   });
 

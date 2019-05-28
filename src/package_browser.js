@@ -3,7 +3,7 @@ import SearchField from "./search_field";
 import PackageContents from "./package_contents";
 import { Heading, Alert, Loading } from "@umich-lib/core";
 
-class BagBrowser extends React.Component {
+class PackageBrowser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -109,4 +109,4 @@ class PackageDisplay extends React.Component {
   }
 }
 
-export default BagBrowser;
+export default PackageBrowser;
