@@ -1,6 +1,7 @@
 import React from "react";
 import SearchField from "./search_field";
 import PackageContents from "./package_contents";
+import { Heading, Alert, Loading } from "@umich-lib/core";
 
 class BagBrowser extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class BagBrowser extends React.Component {
     return (
       <div>
         <SearchField onChange={(e) => { this.switchPackage(e); }}/>
+        <br/>
         <PackageDisplay api={this.props.api} package={this.state.id}/>
       </div>
     );
@@ -83,23 +85,26 @@ class PackageDisplay extends React.Component {
     if(this.state.isLoaded) {
       if(this.state.errorStatus) {
         return (
-          <p>Error: could not retrieve {this.props.package} ({this.state.errorStatus})</p>
+          <Alert intent="error">Error: could not retrieve {this.props.package} ({this.state.errorStatus})</Alert>
         );
       }
 
       if(this.props.package === "") {
         return (
-          <p>Enter an identifier to view a package.</p>
+          <Alert intent="informational">Enter an identifier to view a package.</Alert>
         );
       }
 
       return (
-        <PackageContents base={this.state.base} files={this.state.files}/>
+        <div>
+          <Heading level={2} size="S">{this.props.package}</Heading>
+          <PackageContents base={this.state.base} files={this.state.files}/>
+        </div>
       );
     }
 
     return (
-      <p>Loading...</p>
+      <Loading/>
     );
   }
 }

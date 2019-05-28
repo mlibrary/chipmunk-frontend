@@ -1,16 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Header, List, Heading, GlobalStyleSheet } from "@umich-lib/core";
+import { Margins, UniversalHeader, Heading, GlobalStyleSheet } from "@umich-lib/core";
 import BagBrowser from "./bag_browser";
 
 function App() {
   return (
     <main style={{ padding: "1rem" }}>
-      <GlobalStyleSheet />
+      <GlobalStyleSheet/>
+      <UniversalHeader/>
 
-      <Header name="CHER" />
-
-      <BagBrowser/>
+      <Margins>
+        <Heading level={2} size="2XL">CHER Package Browser</Heading>
+        <BagBrowser/>
+      </Margins>
     </main>
   );
 }
