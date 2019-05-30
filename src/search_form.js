@@ -13,15 +13,17 @@ function SearchForm(props) {
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
+        invalid={props.error ? true : false}
+        invalidText={props.error}
         id={id}
-        labelText="Identifier"
+        labelText="Package Identifier"
         value={identifierQuery}
         onChange={(e) => setIdentifierQuery(e.target.value)}
         type="text"
-        descriptionText="Some helpful thing about how to enter and identifier such as the format."
+        descriptionText="We'll use this to find and retrieve your package."
       />
 
-      <Button type="submit" style={{ marginTop: '1rem' }}>Search</Button>
+      <Button type="submit" style={{ marginTop: '1rem' }}>Find</Button>
     </form>
   );
 }

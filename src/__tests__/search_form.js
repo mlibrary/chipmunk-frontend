@@ -129,3 +129,15 @@ describe('<SearchForm onHandleSubmit={anyFunction} value="initial"/>', () => {
     expect(value).toEqual("initial");
   });
 });
+
+describe('<SearchForm error="uh oh now you done it"/>', () => {
+  beforeEach(() => {
+    doc = render(
+      <SearchForm error="uh oh now you done it"/>
+    );
+  });
+
+  it('contains the text "uh oh now you done it"', () => {
+    expect(doc.baseElement.innerHTML).toMatch(/uh oh now you done it/);
+  });
+});

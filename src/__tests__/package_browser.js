@@ -27,11 +27,6 @@ describe('<PackageBrowser/>', () => {
     expect(searchField().getAttribute("value")).toEqual("");
   });
 
-  it("has some text telling the user to enter an identifier", () => {
-    expect(doc.baseElement.innerHTML).toMatch(
-      /Enter an identifier to view a package/);
-  });
-
   it('should call fetch("v1/bags/foo") when the user types in "foo"', () => {
     fetch.mockResponseOnce();
     fireSearch("foo");
@@ -52,10 +47,32 @@ describe('<PackageBrowser/>', () => {
       fireSearch("wrong_id")
     });
 
-    it("displays an error message with 404 in it", () => {
-      expect(doc.baseElement.innerHTML).toMatch(/could not retrieve/i);
+    it("displays an error message saying we can't find it", () => {
+      expect(doc.baseElement.innerHTML).toMatch(/do not have a package/i);
       expect(doc.baseElement.innerHTML).toMatch(/wrong_id/i);
-      expect(doc.baseElement.innerHTML).toMatch(/404/i);
+    });
+  });
+
+  describe("when searching for a 403ing package", () => {
+    beforeEach(() => {
+      fetch.mockResponseOnce('Forbidden', { status: 403 });
+      fireSearch("2hot2handle")
+    });
+
+    it("displays an error message saying the user is unauthorized", () => {
+      expect(doc.baseElement.innerHTML).toMatch(/not permitted/i);
+      expect(doc.baseElement.innerHTML).toMatch(/2hot2handle/i);
+    });
+  });
+
+  describe("when searching for a 501ing package", () => {
+    beforeEach(() => {
+      fetch.mockResponseOnce('Not found', { status: 501 });
+      fireSearch("uh_oh_its_bad")
+    });
+
+    it("displays an internal server error message", () => {
+      expect(doc.baseElement.innerHTML).toMatch(/please try again later/i);
     });
   });
 
@@ -65,10 +82,8 @@ describe('<PackageBrowser/>', () => {
       fireSearch("uh_oh_its_bad")
     });
 
-    it("displays an error message with 'json' in it", () => {
-      expect(doc.baseElement.innerHTML).toMatch(/could not retrieve/i);
-      expect(doc.baseElement.innerHTML).toMatch(/uh_oh_its_bad/i);
-      expect(doc.baseElement.innerHTML).toMatch(/json/i);
+    it("displays an internal server error message", () => {
+      expect(doc.baseElement.innerHTML).toMatch(/please try again later/i);
     });
   });
 
