@@ -1,5 +1,5 @@
 import React from "react";
-import SearchField from "./search_field";
+import SearchForm from "./search_form";
 import PackageContents from "./package_contents";
 import { Heading, Alert, Loading } from "@umich-lib/core";
 
@@ -18,7 +18,7 @@ class PackageBrowser extends React.Component {
   render() {
     return (
       <div>
-        <SearchField onChange={(e) => { this.switchPackage(e); }}/>
+        <SearchForm onHandleSubmit={(id) => { this.switchPackage(id); }}/>
         <br/>
         <PackageDisplay api={this.props.api} package={this.state.id}/>
       </div>

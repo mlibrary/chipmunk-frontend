@@ -1,19 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Margins, UniversalHeader, Heading, GlobalStyleSheet } from "@umich-lib/core";
+import { Margins, UniversalHeader, Heading, GlobalStyleSheet, SPACING } from "@umich-lib/core";
 import PackageBrowser from "./package_browser";
 
 function App() {
   return (
-    <main style={{ padding: "1rem" }}>
+    <div>
       <GlobalStyleSheet/>
       <UniversalHeader/>
 
       <Margins>
-        <Heading level={2} size="2XL">CHER Package Browser</Heading>
-        <PackageBrowser/>
+        <main style={{
+          maxWidth: '38rem'
+        }}>
+          <Heading level={1} size="3XL" style={{
+            marginTop: SPACING['2XL'],
+            marginBottom: SPACING['XL']
+          }}>CHER Package Browser</Heading>
+          <PackageBrowser />
+        </main>
       </Margins>
-    </main>
+    </div>
   );
 }
 
