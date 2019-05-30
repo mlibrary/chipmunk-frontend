@@ -160,3 +160,21 @@ describe('<PackageBrowser api="https://default.invalid"/>', () => {
     });
   });
 });
+
+describe('<PackageBrowser value="startingValue"/>', () => {
+  beforeEach(() => {
+    fetch.mockResponseOnce();
+    doc = render(
+      <PackageBrowser value="startingValue"/>
+    );
+  });
+
+  it('creates a text input with "startingValue"', () => {
+    expect(searchField().getAttribute("value")).toEqual("startingValue");
+  });
+
+  it('calls fetch("v1/bags/startingValue") as it loads', () => {
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0][0]).toEqual("v1/bags/startingValue");
+  });
+});

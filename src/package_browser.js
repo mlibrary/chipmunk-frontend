@@ -7,7 +7,7 @@ class PackageBrowser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: ""
+      id: (props.value || "")
     };
   }
 
@@ -18,7 +18,10 @@ class PackageBrowser extends React.Component {
   render() {
     return (
       <div>
-        <SearchForm onHandleSubmit={(id) => { this.switchPackage(id); }}/>
+        <SearchForm
+          value={this.state.id}
+          onHandleSubmit={(id) => { this.switchPackage(id); }}
+        />
         <br/>
         <PackageDisplay api={this.props.api} package={this.state.id}/>
       </div>
