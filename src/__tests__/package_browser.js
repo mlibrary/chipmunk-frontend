@@ -5,7 +5,10 @@ import {render, fireEvent, cleanup} from "react-testing-library";
 let doc;
 
 const searchField = () => doc.baseElement.getElementsByTagName("input").item(0);
-const fireSearch = query => fireEvent.change(searchField(), { target: { value: query } });
+const fireSearch = query => {
+  fireEvent.change(searchField(), { target: { value: query } });
+  fireEvent.submit(doc.baseElement.getElementsByTagName("form").item(0), {});
+};
 
 afterEach(() => {
   cleanup();

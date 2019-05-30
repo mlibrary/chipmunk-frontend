@@ -1,5 +1,5 @@
 import React from "react";
-import SearchField from "../search_field";
+import SearchForm from "../search_form";
 import {render, fireEvent, cleanup} from "react-testing-library";
 
 let doc;
@@ -7,13 +7,17 @@ let doc;
 const labels = () => doc.baseElement.getElementsByTagName("label");
 const inputs = () => doc.baseElement.getElementsByTagName("input");
 const input = () => inputs().item(0);
+const fireSubmit = value => {
+  fireEvent.change(input(), { target: { value: value } });
+  fireEvent.submit(doc.baseElement.getElementsByTagName("form").item(0), {});
+};
 
 afterEach(cleanup);
 
-describe('<SearchField/>', () => {
+describe('<SearchForm/>', () => {
   beforeEach(() => {
     doc = render(
-      <SearchField/>
+      <SearchForm/>
     );
   });
 
@@ -45,12 +49,12 @@ describe('<SearchField/>', () => {
   });
 });
 
-describe('<SearchField onChange={anyFunction}/>', () => {
+describe('<SearchForm onHandleSubmit={anyFunction}/>', () => {
   let value;
 
   beforeEach(() => {
     doc = render(
-      <SearchField onChange={x => { value = x; }}/>
+      <SearchForm onHandleSubmit={x => { value = x; }}/>
     );
 
     value = "unset";
@@ -58,7 +62,7 @@ describe('<SearchField onChange={anyFunction}/>', () => {
 
   describe("when a user changes the input's value to \"hello\"", () => {
     beforeEach(() => {
-      fireEvent.change(input(), { target: { value: "hello" } });
+      fireSubmit("hello");
     });
 
     it('calls anyFunction("hello")', () => {
@@ -67,7 +71,7 @@ describe('<SearchField onChange={anyFunction}/>', () => {
 
     describe("and then they change the input's value to \"goodbye\"", () => {
       beforeEach(() => {
-        fireEvent.change(input(), { target: { value: "goodbye" } });
+        fireSubmit("goodbye");
       });
 
       it('calls anyFunction("goodbye")', () => {
@@ -77,10 +81,10 @@ describe('<SearchField onChange={anyFunction}/>', () => {
   });
 });
 
-describe('<SearchField value="LIT is lit"/>', () => {
+describe('<SearchForm value="LIT is lit"/>', () => {
   beforeEach(() => {
     doc = render(
-      <SearchField value="LIT is lit"/>
+      <SearchForm value="LIT is lit"/>
     );
   });
 
@@ -89,10 +93,10 @@ describe('<SearchField value="LIT is lit"/>', () => {
   });
 });
 
-describe('<SearchField id="wow_very_unique"/>', () => {
+describe('<SearchForm id="wow_very_unique"/>', () => {
   beforeEach(() => {
     doc = render(
-      <SearchField id="wow_very_unique"/>
+      <SearchForm id="wow_very_unique"/>
     );
   });
 

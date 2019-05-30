@@ -15,7 +15,7 @@ function SearchForm(props) {
       <TextInput
         id={id}
         labelText="Identifier"
-        value={identifierQuery}
+        value={props.value}
         onChange={(e) => setIdentifierQuery(e.target.value)}
         type="text"
         descriptionText="Some helpful thing about how to enter and identifier such as the format."
