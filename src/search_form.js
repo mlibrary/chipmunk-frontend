@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { TextInput, Button } from "@umich-lib/core";
 
 function SearchForm(props) {
-  const [identifierQuery, setIdentifierQuery] = useState("")
+  const [identifierQuery, setIdentifierQuery] = useState(props.value || "");
   const id = props.id || "the_only_search_field";
 
   function handleSubmit(e) {
-    e.preventDefault()
-    props.onHandleSubmit(identifierQuery)
+    e.preventDefault();
+    props.onHandleSubmit(identifierQuery);
   }
 
   return (
@@ -15,7 +15,7 @@ function SearchForm(props) {
       <TextInput
         id={id}
         labelText="Identifier"
-        value={props.value}
+        value={identifierQuery}
         onChange={(e) => setIdentifierQuery(e.target.value)}
         type="text"
         descriptionText="Some helpful thing about how to enter and identifier such as the format."

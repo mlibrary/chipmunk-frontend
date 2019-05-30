@@ -7,9 +7,13 @@ let doc;
 const labels = () => doc.baseElement.getElementsByTagName("label");
 const inputs = () => doc.baseElement.getElementsByTagName("input");
 const input = () => inputs().item(0);
+
+const pressSubmitButton = () =>
+  fireEvent.submit(doc.baseElement.getElementsByTagName("form").item(0), {});
+
 const fireSubmit = value => {
   fireEvent.change(input(), { target: { value: value } });
-  fireEvent.submit(doc.baseElement.getElementsByTagName("form").item(0), {});
+  pressSubmitButton();
 };
 
 afterEach(cleanup);
@@ -106,5 +110,22 @@ describe('<SearchForm id="wow_very_unique"/>', () => {
 
   it('has <label for="wow_very_unique" ...>', () => {
     expect(labels().item(0).getAttribute("for")).toEqual("wow_very_unique");
+  });
+});
+
+describe('<SearchForm onHandleSubmit={anyFunction} value="initial"/>', () => {
+  let value;
+
+  beforeEach(() => {
+    doc = render(
+      <SearchForm onHandleSubmit={x => { value = x; }} value="initial"/>
+    );
+
+    value = "unset";
+  });
+
+  it('calls anyFunction("initial") when the user hits submit', () => {
+    pressSubmitButton();
+    expect(value).toEqual("initial");
   });
 });
