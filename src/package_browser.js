@@ -2,28 +2,22 @@ import React from "react";
 import SearchForm from "./search_form";
 import PackageContents from "./package_contents";
 import { Heading, Alert, Loading } from "@umich-lib/core";
+import {Route} from 'react-router-dom';
 
-          //<Alert intent="error">Error: could not retrieve {this.props.package} ({this.state.errorStatus})</Alert>
 class PackageBrowser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: (props.value || ""),
       error: ""
     };
-  }
-
-  switchPackage(id) {
-    this.setState({ id: id });
-    window.history.pushState({}, "Dark Blue: " + id, "/p/" + id)
   }
 
   setError(error) {
     if(error) {
       if(error === 404) {
-        this.setState({ error: "We do not have a package stored with the identifier: " + this.state.id + ". Please verify that you are using the correct format." });
+        this.setState({ error: "We do not have a package stored with the identifier: " + this.props.packageId + ". Please verify that you are using the correct format." });
       } else if(error === 403) {
-        this.setState({ error: "You are not permitted to view the package: " + this.state.id + ". Please contact the content manager for this item if you believe you should have access." });
+        this.setState({ error: "You are not permitted to view the package: " + this.props.packageId + ". Please contact the content manager for this item if you believe you should have access." });
       } else {
         this.setState({ error: "We experienced an error in servicing your request. Please try again later." });
       }
@@ -35,17 +29,19 @@ class PackageBrowser extends React.Component {
   render() {
     return (
       <div>
-        <SearchForm
-          error={this.state.error}
-          value={this.state.id}
-          onHandleSubmit={(id) => { this.switchPackage(id); }}
-        />
+	<Route render={({ history }) => (
+	  <SearchForm
+	    error={this.state.error}
+	    value={this.props.packageId}
+	    onHandleSubmit={(id) => { history.push('/p/' + id); }}
+	  />
+	)} />
         <br/>
-        <PackageDisplay
-          api={this.props.api}
-          package={this.state.id}
-          onError={e => {this.setError(e)}}
-        />
+	<PackageDisplay
+	  api={this.props.api}
+	  package={this.props.packageId}
+	  onError={e => {this.setError(e)}}
+	/>
       </div>
     );
   }
@@ -131,3 +127,4 @@ class PackageDisplay extends React.Component {
 }
 
 export default PackageBrowser;
+

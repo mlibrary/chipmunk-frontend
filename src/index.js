@@ -19,7 +19,7 @@ function App({ match }) {
             marginBottom: SPACING['XL']
           }}>CHER Package Browser</Heading>
 
-          <PackageBrowser value={ match.params.id }/>
+          <PackageBrowser packageId={ match.params.id }/>
         </main>
       </Margins>
     </div>

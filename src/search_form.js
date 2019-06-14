@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextInput, Button } from "@umich-lib/core";
 
 function SearchForm(props) {
-  const [identifierQuery, setIdentifierQuery] = useState(props.value || "");
+  const [identifierQuery, setIdentifierQuery] = useState(props.packageId || "");
   const id = props.id || "the_only_search_field";
 
   function handleSubmit(e) {
