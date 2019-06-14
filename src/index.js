@@ -2,8 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Margins, UniversalHeader, Heading, GlobalStyleSheet, SPACING } from "@umich-lib/core";
 import PackageBrowser from "./package_browser";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-function App() {
+function App({ match }) {
   return (
     <div>
       <GlobalStyleSheet/>
@@ -17,12 +18,22 @@ function App() {
             marginTop: SPACING['2XL'],
             marginBottom: SPACING['XL']
           }}>CHER Package Browser</Heading>
-          <PackageBrowser />
+
+          <PackageBrowser value={ match.params.id }/>
         </main>
       </Margins>
     </div>
   );
 }
 
+function AppRouter() {
+    return (
+        <Router>
+          <Route path="/" exact component={App} />
+          <Route path="/p/:id" component={App} />
+        </Router>
+      );
+  }
+
 const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render(<AppRouter />, rootElement);
