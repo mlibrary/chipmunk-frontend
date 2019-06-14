@@ -15,6 +15,7 @@ class PackageBrowser extends React.Component {
 
   switchPackage(id) {
     this.setState({ id: id });
+    window.history.pushState({}, "Dark Blue: " + id, "/p/" + id)
   }
 
   setError(error) {
