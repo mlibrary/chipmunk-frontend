@@ -1,6 +1,6 @@
 import React from "react";
 import PackageContents from "../package_contents";
-import {render, cleanup} from "react-testing-library";
+import {render, cleanup} from "@testing-library/react";
 
 let doc;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import PackageBrowser from "../package_browser";
-import {render, fireEvent, cleanup} from "react-testing-library";
+import {render, fireEvent, cleanup} from "@testing-library/react";
 
 let doc;
 
@@ -50,6 +50,18 @@ describe('<PackageBrowser/>', () => {
     it("displays an error message saying we can't find it", () => {
       expect(doc.baseElement.innerHTML).toMatch(/do not have a package/i);
       expect(doc.baseElement.innerHTML).toMatch(/wrong_id/i);
+    });
+
+    describe("and then searching for a retrievable package", () => {
+      beforeEach(() => {
+        fetch.mockResponseOnce(JSON.stringify({ files: ["mets.xml"], bag_id: "uuid" }));
+        fireSearch("mets_only");
+      });
+
+      it("no longer displays the error message", () => {
+        expect(doc.baseElement.innerHTML).not.toMatch(/do not have a package/i);
+        expect(doc.baseElement.innerHTML).not.toMatch(/wrong_id/i);
+      });
     });
   });
 
@@ -104,6 +116,18 @@ describe('<PackageBrowser/>', () => {
       }
 
       expect(count).toEqual(1);
+    });
+
+    describe("and then searching for a 404ing package", () => {
+      beforeEach(() => {
+        fetch.mockResponseOnce('Not found', { status: 404 });
+        fireSearch("wrong_id")
+      });
+
+      it("displays an error message saying we can't find it", () => {
+        expect(doc.baseElement.innerHTML).toMatch(/do not have a package/i);
+        expect(doc.baseElement.innerHTML).toMatch(/wrong_id/i);
+      });
     });
   });
 

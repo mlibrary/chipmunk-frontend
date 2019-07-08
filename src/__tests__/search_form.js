@@ -1,6 +1,6 @@
 import React from "react";
 import SearchForm from "../search_form";
-import {render, fireEvent, cleanup} from "react-testing-library";
+import {render, fireEvent, cleanup} from "@testing-library/react";
 
 let doc;
 
