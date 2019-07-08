@@ -2,12 +2,12 @@ import React from "react";
 import FileLink from "./file_link";
 import { List } from "@umich-lib/core";
 
-function PackageContents(props) {
+function FileList(props) {
   const files = props.files || [];
   const base = props.base || null;
 
   return (
-    <List>
+    <List type="bulleted">
       {files.map(filename => (
         <li key={filename}><FileLink base={base}>{filename}</FileLink></li>
       ))}
@@ -15,4 +15,4 @@ function PackageContents(props) {
   );
 }
 
-export default PackageContents;
+export default FileList;

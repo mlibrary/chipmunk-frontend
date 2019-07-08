@@ -1,6 +1,7 @@
 import React from "react";
-import PackageBrowser from "../package_browser";
-import {render, fireEvent, cleanup} from "react-testing-library";
+import ArtifactSearch from "../artifact_search";
+import {render, fireEvent, cleanup} from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 
 let doc;
 
@@ -15,10 +16,12 @@ afterEach(() => {
   fetch.resetMocks();
 });
 
-describe('<PackageBrowser/>', () => {
+describe('<ArtifactSearch/>', () => {
   beforeEach(() => {
     doc = render(
-      <PackageBrowser/>
+      <MemoryRouter>
+        <ArtifactSearch/>
+      </MemoryRouter>
     );
   });
 
@@ -41,19 +44,31 @@ describe('<PackageBrowser/>', () => {
     expect(fetch.mock.calls[0][0]).toEqual("v1/bags/bar");
   });
 
-  describe("when searching for a 404ing package", () => {
+  describe("when searching for a 404ing artifact", () => {
     beforeEach(() => {
       fetch.mockResponseOnce('Not found', { status: 404 });
       fireSearch("wrong_id")
     });
 
     it("displays an error message saying we can't find it", () => {
-      expect(doc.baseElement.innerHTML).toMatch(/do not have a package/i);
+      expect(doc.baseElement.innerHTML).toMatch(/do not have an artifact/i);
       expect(doc.baseElement.innerHTML).toMatch(/wrong_id/i);
+    });
+
+    describe("and then searching for a retrievable artifact", () => {
+      beforeEach(() => {
+        fetch.mockResponseOnce(JSON.stringify({ files: ["mets.xml"], bag_id: "uuid" }));
+        fireSearch("mets_only");
+      });
+
+      it("no longer displays the error message", () => {
+        expect(doc.baseElement.innerHTML).not.toMatch(/do not have an artifact/i);
+        expect(doc.baseElement.innerHTML).not.toMatch(/wrong_id/i);
+      });
     });
   });
 
-  describe("when searching for a 403ing package", () => {
+  describe("when searching for a 403ing artifact", () => {
     beforeEach(() => {
       fetch.mockResponseOnce('Forbidden', { status: 403 });
       fireSearch("2hot2handle")
@@ -65,7 +80,7 @@ describe('<PackageBrowser/>', () => {
     });
   });
 
-  describe("when searching for a 501ing package", () => {
+  describe("when searching for a 501ing artifact", () => {
     beforeEach(() => {
       fetch.mockResponseOnce('Not found', { status: 501 });
       fireSearch("uh_oh_its_bad")
@@ -87,7 +102,7 @@ describe('<PackageBrowser/>', () => {
     });
   });
 
-  describe("when searching for a package with only a mets.xml file", () => {
+  describe("when searching for an artifact with only a mets.xml file", () => {
     beforeEach(() => {
       fetch.mockResponseOnce(JSON.stringify({ files: ["mets.xml"], bag_id: "uuid" }));
       fireSearch("mets_only");
@@ -105,9 +120,21 @@ describe('<PackageBrowser/>', () => {
 
       expect(count).toEqual(1);
     });
+
+    describe("and then searching for a 404ing artifact", () => {
+      beforeEach(() => {
+        fetch.mockResponseOnce('Not found', { status: 404 });
+        fireSearch("wrong_id")
+      });
+
+      it("displays an error message saying we can't find it", () => {
+        expect(doc.baseElement.innerHTML).toMatch(/do not have an artifact/i);
+        expect(doc.baseElement.innerHTML).toMatch(/wrong_id/i);
+      });
+    });
   });
 
-  describe("when searching for a package with five wav files", () => {
+  describe("when searching for an artifact with five wav files", () => {
     beforeEach(() => {
       fetch.mockResponseOnce(JSON.stringify(
         { files: ["00000001.wav",
@@ -138,10 +165,12 @@ describe('<PackageBrowser/>', () => {
   });
 });
 
-describe('<PackageBrowser api="https://default.invalid"/>', () => {
+describe('<ArtifactSearch api="https://default.invalid/"/>', () => {
   beforeEach(() => {
     doc = render(
-      <PackageBrowser api="https://default.invalid"/>
+      <MemoryRouter>
+        <ArtifactSearch api="https://default.invalid/"/>
+      </MemoryRouter>
     );
   });
 
@@ -152,7 +181,7 @@ describe('<PackageBrowser api="https://default.invalid"/>', () => {
     expect(fetch.mock.calls[0][0]).toEqual("https://default.invalid/v1/bags/abcd");
   });
 
-  describe("when searching for a package with only a mets.xml file", () => {
+  describe("when searching for an artifact with only a mets.xml file", () => {
     beforeEach(() => {
       fetch.mockResponseOnce(JSON.stringify({
         files: ["mets.xml"],
@@ -176,11 +205,13 @@ describe('<PackageBrowser api="https://default.invalid"/>', () => {
   });
 });
 
-describe('<PackageBrowser value="startingValue"/>', () => {
+describe('<ArtifactSearch value="startingValue"/>', () => {
   beforeEach(() => {
     fetch.mockResponseOnce();
     doc = render(
-      <PackageBrowser value="startingValue"/>
+      <MemoryRouter>
+        <ArtifactSearch value="startingValue"/>
+      </MemoryRouter>
     );
   });
 
