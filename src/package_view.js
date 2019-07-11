@@ -1,6 +1,16 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from "react";
 import PackageContents from "./package_contents";
-import { Alert, Heading, Link, Loading } from "@umich-lib/core";
+import {
+  Alert,
+  Heading,
+  Loading,
+  SPACING,
+  Z_SPACE
+} from "@umich-lib/core";
+
+import Link from './link'
 
 class PackageView extends React.Component {
   constructor(props) {
@@ -21,10 +31,22 @@ class PackageView extends React.Component {
       return null;
     } else if (this.isLoaded()) {
       return (
-        <div>
-          <Heading level={2} size="S">{this.props.id}</Heading>
+        <div css={{
+          ...Z_SPACE['8'],
+          padding: SPACING['L']
+        }}>          
           { this.props.permalink
-            ? <Link href={this.props.permalink + this.props.id}>Permalink</Link>
+            ? (
+              <Link
+                to={this.props.permalink + this.props.id}
+                kind="description"
+                css={{
+                  marginBottom: SPACING['M']
+                }}
+              >
+                <Heading level={2} size="S">{this.props.id}</Heading>
+              </Link>
+            )
             : null }
           <PackageContents
             base={this.apiPath("v1/packages", this.state.bagResponse.bag_id)}

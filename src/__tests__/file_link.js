@@ -22,10 +22,10 @@ describe('<FileLink>my_file.txt</FileLink>', () => {
   });
 });
 
-describe('<FileLink base="v1/packages">mets.xml</FileLink>', () => {
+describe('<FileLink base="/v1/packages">mets.xml</FileLink>', () => {
   beforeEach(() => {
     doc = render(
-      <FileLink base="v1/packages">mets.xml</FileLink>
+      <FileLink base="/v1/packages">mets.xml</FileLink>
     );
   });
 

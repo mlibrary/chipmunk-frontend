@@ -7,7 +7,7 @@ function PackageContents(props) {
   const base = props.base || null;
 
   return (
-    <List>
+    <List type="bulleted">
       {files.map(filename => (
         <li key={filename}><FileLink base={base}>{filename}</FileLink></li>
       ))}
