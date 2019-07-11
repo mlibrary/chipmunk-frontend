@@ -1,40 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { Margins, UniversalHeader, Heading, GlobalStyleSheet, SPACING } from "@umich-lib/core";
 import PackageBrowser from "./package_browser";
 import PackageView from "./package_view";
 import errorMessage from "./error_message";
-
-class ErroringPackage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: undefined
-    }
-  }
-
-  render() {
-    return (
-      <PackageView
-        api="/"
-        id={this.props.id}
-        onError={e => { this.setError(e) }}
-        error={this.state.error}
-      />
-    );
-  }
-
-  setError(code) {
-    this.setState({ error: errorMessage(code, this.props.id) });
-  }
-}
-
-function DirectPackage({ match }) {
-  return (
-    <ErroringPackage id={match.params.id}/>
-  );
-}
 
 function App() {
   return (
@@ -58,6 +28,36 @@ function App() {
       </Margins>
     </div>
   );
+}
+
+function DirectPackage({ match }) {
+  return (
+    <ErroringPackage id={match.params.id}/>
+  );
+}
+
+class ErroringPackage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: undefined
+    }
+  }
+
+  render() {
+    return (
+      <PackageView
+        api="/"
+        id={this.props.id}
+        onError={e => { this.setError(e) }}
+        error={this.state.error}
+      />
+    );
+  }
+
+  setError(code) {
+    this.setState({ error: errorMessage(code, this.props.id) });
+  }
 }
 
 const rootElement = document.getElementById("root");

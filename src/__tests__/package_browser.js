@@ -162,10 +162,10 @@ describe('<PackageBrowser/>', () => {
   });
 });
 
-describe('<PackageBrowser api="https://default.invalid"/>', () => {
+describe('<PackageBrowser api="https://default.invalid/"/>', () => {
   beforeEach(() => {
     doc = render(
-      <PackageBrowser api="https://default.invalid"/>
+      <PackageBrowser api="https://default.invalid/"/>
     );
   });
 

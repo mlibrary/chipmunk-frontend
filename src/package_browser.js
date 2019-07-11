@@ -1,9 +1,7 @@
 import React from "react";
 import SearchForm from "./search_form";
-import PackageContents from "./package_contents";
 import PackageView from "./package_view";
 import errorMessage from "./error_message";
-import { Heading, Alert, Loading } from "@umich-lib/core";
 
 class PackageBrowser extends React.Component {
   constructor(props) {
@@ -12,17 +10,6 @@ class PackageBrowser extends React.Component {
       id: (props.value || ""),
       error: ""
     };
-  }
-
-  switchPackage(id) {
-    this.setState({
-      error: "",
-      id: id
-    });
-  }
-
-  setError(error) {
-    this.setState({ error: errorMessage(error, this.state.id) });
   }
 
   render() {
@@ -42,6 +29,17 @@ class PackageBrowser extends React.Component {
         />
       </div>
     );
+  }
+
+  switchPackage(id) {
+    this.setState({
+      error: "",
+      id: id
+    });
+  }
+
+  setError(error) {
+    this.setState({ error: errorMessage(error, this.state.id) });
   }
 }
 

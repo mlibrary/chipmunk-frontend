@@ -147,6 +147,10 @@ describe('<PackageView id="a package with only a mets.xml file"/>', () => {
 
     expect(count).toEqual(1);
   });
+
+  it("has no permalink", () => {
+    expect(doc.baseElement.innerHTML).not.toMatch(/permalink/i);
+  });
 });
 
 describe('<PackageView id="a package with five wav files"/>', () => {
@@ -180,12 +184,12 @@ describe('<PackageView id="a package with five wav files"/>', () => {
   }
 });
 
-describe('<PackageView api="https://default.invalid"/>', () => {
+describe('<PackageView api="https://default.invalid/"/>', () => {
   beforeEach(() => {
     fetch.mockResponseOnce(JSON.stringify({ files: ["mets.xml"],
                                             bag_id: "uuid" }));
     doc = render(
-      <PackageView id="someid" api="https://default.invalid"/>
+      <PackageView id="someid" api="https://default.invalid/"/>
     );
   });
 
@@ -200,34 +204,6 @@ describe('<PackageView api="https://default.invalid"/>', () => {
 
     for(let i = 0; i < elts.length; i += 1) {
       if(elts.item(i).getAttribute("href") === "https://default.invalid/v1/packages/uuid/mets.xml") {
-        count += 1;
-      }
-    }
-
-    expect(count).toEqual(1);
-  });
-});
-
-describe('<PackageView api="/"/>', () => {
-  beforeEach(() => {
-    fetch.mockResponseOnce(JSON.stringify({ files: ["mets.xml"],
-                                            bag_id: "uuid" }));
-    doc = render(
-      <PackageView id="someid" api="/"/>
-    );
-  });
-
-  it('should call fetch from /', () => {
-    expect(fetch.mock.calls.length).toEqual(1);
-    expect(fetch.mock.calls[0][0]).toEqual("/v1/bags/someid");
-  });
-
-  it("should contain links to files under /", () => {
-    let count = 0;
-    const elts = doc.baseElement.getElementsByTagName("a");
-
-    for(let i = 0; i < elts.length; i += 1) {
-      if(elts.item(i).getAttribute("href") === "/v1/packages/uuid/mets.xml") {
         count += 1;
       }
     }

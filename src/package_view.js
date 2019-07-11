@@ -17,35 +17,21 @@ class PackageView extends React.Component {
       return (
         <Alert intent="error">{this.props.error}</Alert>
       );
-    } else if (this.isError()
-               || this.props.id === ""
-               || typeof this.props.id === "undefined") {
-      return (
-        <div/>
-      );
+    } else if (this.isErrorOrEmpty()) {
+      return null;
     } else if (this.isLoaded()) {
-      if (this.props.permalink) {
-        return (
-          <div>
-            <Heading level={2} size="S">{this.props.id}</Heading>
-            <Link href={this.props.permalink + this.props.id}>Permalink</Link>
-            <PackageContents
-              base={this.apiPath("v1/packages", this.state.bagResponse.bag_id)}
-              files={this.state.bagResponse.files}
-            />
-          </div>
-        );
-      } else {
-        return (
-          <div>
-            <Heading level={2} size="S">{this.props.id}</Heading>
-            <PackageContents
-              base={this.apiPath("v1/packages", this.state.bagResponse.bag_id)}
-              files={this.state.bagResponse.files}
-            />
-          </div>
-        );
-      }
+      return (
+        <div>
+          <Heading level={2} size="S">{this.props.id}</Heading>
+          { this.props.permalink
+            ? <Link href={this.props.permalink + this.props.id}>Permalink</Link>
+            : null }
+          <PackageContents
+            base={this.apiPath("v1/packages", this.state.bagResponse.bag_id)}
+            files={this.state.bagResponse.files}
+          />
+        </div>
+      );
     } else {
       this.findPackage();
       return (
@@ -54,42 +40,10 @@ class PackageView extends React.Component {
     }
   }
 
-  findPackage() {
-    const id = this.props.id;
-    if (this.state.prevFetch !== id) {
-      fetch(this.apiPath("v1/bags", id)).then(response => {
-        this.setState({ prevFetch: id });
-        if (response.status >= 200 && response.status < 300) return response.json();
-        this.handleError(id, response.status);
-      }).then(result => {
-        if (typeof result !== "undefined") {
-          this.setState({
-            id: id,
-            isError: false,
-            bagResponse: result
-          });
-        }
-      }, error => {
-        this.handleError(id, 501);
-      });
-    }
-  }
-
-  apiPath(path, item) {
-    if (this.props.api) {
-      if (this.props.api.endsWith("/")) return this.props.api + path + "/" + item;
-      else return this.props.api + "/" + path + "/" + item;
-    } else {
-      return path + "/" + item;
-    }
-  }
-
-  handleError(id, e) {
-    if (typeof this.props.onError !== "undefined") this.props.onError(e);
-    this.setState({
-      id: id,
-      isError: true
-    });
+  isErrorOrEmpty() {
+    return (this.isError()
+            || this.props.id === ""
+            || typeof this.props.id === "undefined");
   }
 
   isError() {
@@ -98,6 +52,65 @@ class PackageView extends React.Component {
 
   isLoaded() {
     return (this.state.id === this.props.id);
+  }
+
+  findPackage() {
+    if (!this.fetchHasBeenRun()) {
+      this.fetchCurrentPackage().then(response => {
+        if (this.responseSucceeded(response)) {
+          this.handleSuccess(response);
+        } else {
+          this.handleError(response.status);
+        }
+      });
+    }
+  }
+
+  fetchHasBeenRun() {
+    return (this.state.prevFetch === this.props.id);
+  }
+
+  fetchCurrentPackage() {
+    return fetch(this.apiPath("v1/bags", this.props.id)).then(data => {
+      this.setState({ prevFetch: this.props.id });
+      return data;
+    });
+  }
+
+  apiPath(path, item) {
+    if (this.props.api) {
+      return this.props.api + path + "/" + item;
+    } else {
+      return path + "/" + item;
+    }
+  }
+
+  responseSucceeded(response) {
+    return (response.status === 200);
+  }
+
+  handleSuccess(response) {
+    response.json().then(responseBody => {
+      this.addResponseToState(responseBody);
+    }, () => {
+      this.handleError(501);
+    });
+  }
+
+  addResponseToState(response) {
+    this.setState({
+      bagResponse: response,
+      id: this.props.id,
+      isError: false
+    });
+  }
+
+  handleError(code) {
+    if (this.props.onError) this.props.onError(code);
+    this.setState({
+      id: this.props.id,
+      isError: true
+    });
   }
 }
 
