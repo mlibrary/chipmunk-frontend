@@ -1,6 +1,7 @@
 import React from "react";
-import PackageContents from "../package_contents";
-import {render, cleanup} from "react-testing-library";
+import FileList from "../file_list";
+import {render, cleanup} from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 
 let doc;
 
@@ -11,10 +12,12 @@ const a_elt = i => li_elt(i).getElementsByTagName('a').item(0);
 
 afterEach(cleanup);
 
-describe('<PackageContents/>', () => {
+describe('<FileList/>', () => {
   beforeEach(() => {
     doc = render(
-      <PackageContents/>
+      <MemoryRouter>
+        <FileList/>
+      </MemoryRouter>
     );
   });
 
@@ -27,10 +30,12 @@ describe('<PackageContents/>', () => {
   });
 });
 
-describe('<PackageContents files={["only_file"]}/>', () => {
+describe('<FileList files={["only_file"]}/>', () => {
   beforeEach(() => {
     doc = render(
-      <PackageContents files={["only_file"]}/>
+      <MemoryRouter>
+        <FileList files={["only_file"]}/>
+      </MemoryRouter>
     );
   });
 
@@ -52,10 +57,12 @@ describe('<PackageContents files={["only_file"]}/>', () => {
   });
 });
 
-describe('<PackageContents files={["a", "b", "c"]}/>', () => {
+describe('<FileList files={["a", "b", "c"]}/>', () => {
   beforeEach(() => {
     doc = render(
-      <PackageContents files={["a", "b", "c"]}/>
+      <MemoryRouter>
+        <FileList files={["a", "b", "c"]}/>
+      </MemoryRouter>
     );
   });
 
@@ -92,10 +99,12 @@ describe('<PackageContents files={["a", "b", "c"]}/>', () => {
   });
 });
 
-describe('<PackageContents base="base" files={["a", "b", "c"]}/>', () => {
+describe('<FileList base="/base" files={["a", "b", "c"]}/>', () => {
   beforeEach(() => {
     doc = render(
-      <PackageContents base="base" files={["a", "b", "c"]}/>
+      <MemoryRouter>
+        <FileList base="/base" files={["a", "b", "c"]}/>
+      </MemoryRouter>
     );
   });
 
@@ -108,26 +117,26 @@ describe('<PackageContents base="base" files={["a", "b", "c"]}/>', () => {
   });
 
   it("has a list whose first element's text is \"a\"", () => {
-    expect(a_elt(0).innerHTML).toEqual("a");
+    expect(a_elt(0).innerHTML).toMatch(/>a</);
   });
 
   it("has a list whose first element's href is \"base/a\"", () => {
-    expect(a_elt(0).getAttribute("href")).toEqual("base/a");
+    expect(a_elt(0).getAttribute("href")).toEqual("/base/a");
   });
 
   it("has a list whose second element's text is \"b\"", () => {
-    expect(a_elt(1).innerHTML).toEqual("b");
+    expect(a_elt(1).innerHTML).toMatch(/>b</);
   });
 
   it("has a list whose second element's href is \"base/b\"", () => {
-    expect(a_elt(1).getAttribute("href")).toEqual("base/b");
+    expect(a_elt(1).getAttribute("href")).toEqual("/base/b");
   });
 
   it("has a list whose third element's text is \"c\"", () => {
-    expect(a_elt(2).innerHTML).toEqual("c");
+    expect(a_elt(2).innerHTML).toMatch(/>c</);
   });
 
   it("has a list whose third element's href is \"base/c\"", () => {
-    expect(a_elt(2).getAttribute("href")).toEqual("base/c");
+    expect(a_elt(2).getAttribute("href")).toEqual("/base/c");
   });
 });

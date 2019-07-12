@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, Button } from "@umich-lib/core";
 
-function SearchForm(props) {
+function SearchBar(props) {
   const [identifierQuery, setIdentifierQuery] = useState(props.value || "");
   const id = props.id || "the_only_search_field";
 
@@ -16,11 +16,11 @@ function SearchForm(props) {
         invalid={props.error ? true : false}
         invalidText={props.error}
         id={id}
-        labelText="Package Identifier"
+        labelText="Artifact Identifier"
         value={identifierQuery}
         onChange={(e) => setIdentifierQuery(e.target.value)}
         type="text"
-        descriptionText="We'll use this to find and retrieve your package."
+        descriptionText="We'll use this to find and retrieve your artifact."
       />
 
       <Button type="submit" style={{ marginTop: '1rem' }}>Find</Button>
@@ -28,4 +28,4 @@ function SearchForm(props) {
   );
 }
 
-export default SearchForm;
+export default SearchBar;

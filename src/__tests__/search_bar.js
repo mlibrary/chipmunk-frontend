@@ -1,6 +1,6 @@
 import React from "react";
-import SearchForm from "../search_form";
-import {render, fireEvent, cleanup} from "react-testing-library";
+import SearchBar from "../search_bar";
+import {render, fireEvent, cleanup} from "@testing-library/react";
 
 let doc;
 
@@ -18,10 +18,10 @@ const fireSubmit = value => {
 
 afterEach(cleanup);
 
-describe('<SearchForm/>', () => {
+describe('<SearchBar/>', () => {
   beforeEach(() => {
     doc = render(
-      <SearchForm/>
+      <SearchBar/>
     );
   });
 
@@ -53,12 +53,12 @@ describe('<SearchForm/>', () => {
   });
 });
 
-describe('<SearchForm onHandleSubmit={anyFunction}/>', () => {
+describe('<SearchBar onHandleSubmit={anyFunction}/>', () => {
   let value;
 
   beforeEach(() => {
     doc = render(
-      <SearchForm onHandleSubmit={x => { value = x; }}/>
+      <SearchBar onHandleSubmit={x => { value = x; }}/>
     );
 
     value = "unset";
@@ -85,10 +85,10 @@ describe('<SearchForm onHandleSubmit={anyFunction}/>', () => {
   });
 });
 
-describe('<SearchForm value="LIT is lit"/>', () => {
+describe('<SearchBar value="LIT is lit"/>', () => {
   beforeEach(() => {
     doc = render(
-      <SearchForm value="LIT is lit"/>
+      <SearchBar value="LIT is lit"/>
     );
   });
 
@@ -97,10 +97,10 @@ describe('<SearchForm value="LIT is lit"/>', () => {
   });
 });
 
-describe('<SearchForm id="wow_very_unique"/>', () => {
+describe('<SearchBar id="wow_very_unique"/>', () => {
   beforeEach(() => {
     doc = render(
-      <SearchForm id="wow_very_unique"/>
+      <SearchBar id="wow_very_unique"/>
     );
   });
 
@@ -113,12 +113,12 @@ describe('<SearchForm id="wow_very_unique"/>', () => {
   });
 });
 
-describe('<SearchForm onHandleSubmit={anyFunction} value="initial"/>', () => {
+describe('<SearchBar onHandleSubmit={anyFunction} value="initial"/>', () => {
   let value;
 
   beforeEach(() => {
     doc = render(
-      <SearchForm onHandleSubmit={x => { value = x; }} value="initial"/>
+      <SearchBar onHandleSubmit={x => { value = x; }} value="initial"/>
     );
 
     value = "unset";
@@ -130,10 +130,10 @@ describe('<SearchForm onHandleSubmit={anyFunction} value="initial"/>', () => {
   });
 });
 
-describe('<SearchForm error="uh oh now you done it"/>', () => {
+describe('<SearchBar error="uh oh now you done it"/>', () => {
   beforeEach(() => {
     doc = render(
-      <SearchForm error="uh oh now you done it"/>
+      <SearchBar error="uh oh now you done it"/>
     );
   });
 
